@@ -1,12 +1,10 @@
 #!/bin/sh
 
-# Work with https://www.shorturl.at/
+URL=$(curl --silent --location --head "$1" --output /dev/null -w "%{url_effective}\n")
 
-get_location() {
-	TITLE="redirect_location_is="
-	curl -w "$TITLE%{redirect_url}\n" "$1" 2> /dev/null | grep "$TITLE" | cut -d "=" -f 2
-}
+if [ $? -ne 0 ]; then
+	echo "Error bad url!"
+	exit 1
+fi
 
-FIRST_LOCATION=$(get_location "$1")
-REAL_URL=$(get_location "$FIRST_LOCATION")
-echo "$REAL_URL"
+echo "$URL"
