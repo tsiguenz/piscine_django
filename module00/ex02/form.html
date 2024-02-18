@@ -1,22 +1,20 @@
 <!DOCTYPE html>
-<style>
-
-input {
-	display: block;
-}
-
-#gender input {
-	display: inline;
-}
-
-</style>
-
-<html>
+<html lang="en">
 	<head>
-		<script type="text/javascript" src="popup.js"></script>
+		<script src="popup.js"></script>
+		<title>My awesome form</title>
+		<style>
+			input {
+				display: block;
+			}
+			
+			#gender input {
+				display: inline;
+			}
+		</style>
 	</head>
 	<body>
-		<form action="Javascript:displayFormContents()">
+		<form>
 			<label>Firstname:</label>
 			<input type="text" id="firstname">
 			<label>Name:</label>
@@ -37,7 +35,7 @@ input {
 				<label>Other:</label>
 				<input type="radio" name="gender" id="gender_other" value="other">
 			</div>
-			<input type="submit">
+			<button onclick="displayFormContents()">Run the js</button>
 		</form>
 	</body>
 </html> 
