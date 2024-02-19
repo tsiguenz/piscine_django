@@ -23,7 +23,7 @@ def print_dict():
         'Thompson': '1949',
         'Burton': '1939',
     }
-    d = sorted(d.items(), key=lambda k: (k[1], k))
+    d = sorted(d.items(), key=lambda k: (k[1], k[0]))
     for key in d:
         print(key[0])
 

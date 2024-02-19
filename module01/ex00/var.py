@@ -7,7 +7,7 @@ def print_line(var):
 def my_var():
     integer = 42
     string1 = "42"
-    string2 = "quarante-deux has a type"
+    string2 = "quarante-deux"
     floatingNumber = 42.0
     boolean = True
     lst = [42]
