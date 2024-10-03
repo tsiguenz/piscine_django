@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-
 def line_to_clean_list(line):
     line = line.replace(':', ' ')
     line = line.replace(',', ' ')
