@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 class HotBeverage:
     name = 'hot beverage'
     price = '0.30'

@@ -2,20 +2,21 @@
 import beverages
 import random
 
+
 class CoffeeMachine:
     def __init__(self):
         self.nb_services = 0
 
     class EmptyCup(beverages.HotBeverage):
-        name = 'empty cup'
-        price = '0.90'
+        name = "empty cup"
+        price = "0.90"
 
         def Description(self):
-            return 'An empty cup?! Gimme my money back!'
+            return "An empty cup?! Gimme my money back!"
 
     class BrokenMachineException(Exception):
         def __init__(self):
-            super().__init__('This coffee machine has to be repaired.')
+            super().__init__("This coffee machine has to be repaired.")
 
     def repair(self):
         self.nb_services = 0
@@ -27,19 +28,33 @@ class CoffeeMachine:
         return random.choice([self.EmptyCup(), beverage])
 
 
-if __name__ == '__main__':
+def is_child_of(to_check, base_type):
+    return (
+        isinstance(to_check, type)
+        and issubclass(to_check, base_type)
+        and to_check is not base_type
+    )
+
+
+def get_list_of_available_beverages(lst_items):
+    available_beverages = []
+    for item in lst_items:
+        drink_name = item[0]
+        if not is_child_of(item[1], beverages.HotBeverage):
+            continue
+        available_beverages.append(beverages.__dict__[drink_name]())
+    return available_beverages
+
+
+if __name__ == "__main__":
     machine = CoffeeMachine()
     lst_items = list(beverages.__dict__.items())
-    drinks = []
-    for l in lst_items:
-        drink_name = l[0]
-        if not isinstance(l[1], type) or not issubclass(l[1], beverages.HotBeverage) or l[1] is beverages.HotBeverage:
-            continue
-        drinks.append(beverages.__dict__[drink_name]())
-    for i in range(0,22):
+    available_beverages = get_list_of_available_beverages(lst_items)
+    for i in range(0, 22):
         try:
-            drink = machine.serve(random.choice(drinks))
-            print(f'i = {i}, {drink}', end='\n\n')
+            beverage = machine.serve(random.choice(available_beverages))
+            print(f"i = {i}, {beverage}", end="\n\n")
+
         except Exception as e:
-            print(e, end='\n\n')
+            print(e, end="\n\n")
             machine.repair()
