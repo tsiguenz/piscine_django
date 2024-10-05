@@ -45,7 +45,6 @@ def test_elem_basics():
 
 
 def test_empty_texts():
-    print(str(Elem(content=Text(""))))
     assert str(Elem(content=Text(""))) == "<div></div>"
     assert str(Elem(content=[Text(""), Text("")])) == "<div></div>"
     assert (

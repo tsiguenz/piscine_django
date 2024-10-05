@@ -11,12 +11,12 @@ class Text(str):
         """
         Do you really need a comment to understand this method?..
         """
-        str = super()
-        str = str.replace("<", "&lt;")
-        str = str.replace(">", "&gt;")
-        str = str.replace('"', "&quot;")
-        str = str.replace("\n", "\n<br />\n")
-        return str
+        s = super()
+        s = s.replace("<", "&lt;")
+        s = s.replace(">", "&gt;")
+        s = s.replace('"', "&quot;")
+        s = s.replace("\n", "\n<br />\n")
+        return s
 
 
 class Elem:
@@ -50,11 +50,11 @@ class Elem:
         """
         result = ""
         if self.tag_type == "double":
-            result += f"<{self.tag}>"
+            result += f"<{self.tag}{self.__make_attr()}>"
             result += f"{self.__make_content()}"
             result += f"</{self.tag}>"
         elif self.tag_type == "simple":
-            result = f"<{self.tag} {self.__make_attr()}/>"
+            result = f"<{self.tag}{self.__make_attr()}/>"
         return result
 
     def __make_attr(self):
@@ -63,7 +63,7 @@ class Elem:
         """
         result = ""
         for pair in sorted(self.attr.items()):
-            result += " " + str(pair[0]) + '="' + str(pair[1]) + '"'
+            result += " " + str(pair[0]) + '="' + str(pair[1]) + '" '
         return result
 
     def __make_content(self):
@@ -110,5 +110,13 @@ class Elem:
 
 
 if __name__ == "__main__":
-    pass
-    # [...]
+    title = Elem(tag="title", content=Text('"Hello ground!"'))
+    head = Elem(tag="head", content=title)
+    h1 = Elem(tag="h1", content=Text('"Oh no, not again!"'))
+    img = Elem(
+        tag="img", attr={"src": "http://i.imgur.com/pfp3T.jpg"}, tag_type="simple"
+    )
+    body = Elem(tag="body", content=[h1, img])
+    html = Elem(tag="html", content=[head, body])
+    print(html)
+    print(Elem(content=[42]))
