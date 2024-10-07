@@ -109,7 +109,6 @@ class Br(Elem):
 
 
 if __name__ == "__main__":
-
     html = Html(
         [
             Head(Title(Text("Hello ground!"))),
