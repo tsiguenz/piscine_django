@@ -25,7 +25,8 @@ class Elem:
     """
 
     class ValidationError(Exception):
-        pass
+        def __init__(self):
+            super().__init__("Validation error!")
 
     def __init__(self, tag="div", attr={}, content=None, tag_type="double"):
         """
@@ -87,9 +88,17 @@ class Elem:
         if not Elem.check_type(content):
             raise Elem.ValidationError
         if type(content) is list:
-            self.content += [elem for elem in content if elem != Text("")]
-        elif content != Text(""):
-            self.content.append(content)
+            for item in content:
+                if self.check_type(item) is False:
+                    raise Elem.ValidationError
+                self.content.append(item)
+        elif self.check_type(content):
+            if type(self.content) is list:
+                self.content.append(content)
+            elif self.content is None:
+                self.content = [content]
+            else:
+                self.content = [self.content, content]
 
     @staticmethod
     def check_type(content):
