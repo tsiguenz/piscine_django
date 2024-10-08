@@ -6,7 +6,7 @@ from elem import Text
 from Page import Page
 
 
-def types_of_every_item_in_tree():
+def check_types():
     """If, on the tree path, a node has not one of the following types:
     html, head, body, title, meta, img, table, th, tr, td , ul, ol, li, h1,
     h2, p, div, span, hr, br or Text, the tree is invalid"""
@@ -14,8 +14,7 @@ def types_of_every_item_in_tree():
     assert Page(el.P(Text())).is_valid() is True
     assert (
         Page(
-            el.Html([el.Head(el.Title(Text())), el.Body(
-                [el.P(Text()), el.P(Text())])])
+            el.Html([el.Head(el.Title(Text())), el.Body([el.P(Text()), el.P(Text())])])
         ).is_valid()
         is True
     )
@@ -28,7 +27,7 @@ def types_of_every_item_in_tree():
     assert res is True
 
 
-def head_and_body_in_html():
+def check_head_and_body():
     """Html must strictly contain a Head, then a Body"""
     assert Page(el.Html()).is_valid() is False
     assert Page(el.Html(el.Body())).is_valid() is False
@@ -38,14 +37,13 @@ def head_and_body_in_html():
     assert Page(el.Html([el.Head(), el.Body()])).is_valid() is True
 
 
-def head_contain_only_title():
+def check_head():
     """Head must only contain one Title and only one Title."""
     assert Page(el.Head(el.H1(Text()))).is_valid() is False
     assert Page(el.Head(el.Meta())).is_valid() is False
     assert Page(el.Head()).is_valid() is False
     assert (
-        Page(el.Head([el.Title(Text("title")),
-             el.Title(Text("title"))])).is_valid()
+        Page(el.Head([el.Title(Text("title")), el.Title(Text("title"))])).is_valid()
         is False
     )
     assert Page(el.Head(el.Title(Text("title")))).is_valid() is True
@@ -68,12 +66,62 @@ def check_elem_containing_only_text():
     assert Page(el.Title(el.P(Text("test")))).is_valid() is False
 
 
+def check_span():
+    """Span must only contain Text or some P."""
+    assert Page(el.Span(Text("test"))).is_valid() is True
+    assert Page(el.Span(el.P())).is_valid() is True
+    assert Page(el.Span([el.P(), el.P()])).is_valid() is True
+    assert Page(el.Span([el.P(), Text()])).is_valid() is True
+    assert Page(el.Span(el.H1(Text()))).is_valid() is False
+    assert Page(el.Span([el.P(), el.H1(Text())])).is_valid() is False
+
+
+def check_list():
+    """Ul and Ol must contain at least one Li and only some Li."""
+    assert Page(el.Ul()).is_valid() is False
+    assert Page(el.Ol()).is_valid() is False
+    assert Page(el.Ul(el.P())).is_valid() is False
+    assert Page(el.Ol(el.P())).is_valid() is False
+    assert Page(el.Ul([el.Li(), el.P()])).is_valid() is False
+    assert Page(el.Ol([el.Li(), el.P()])).is_valid() is False
+    assert Page(el.Ul([el.Li(), el.Li()])).is_valid() is True
+    assert Page(el.Ol([el.Li(), el.Li()])).is_valid() is True
+    assert Page(el.Ul(el.Li())).is_valid() is True
+    assert Page(el.Ol(el.Li())).is_valid() is True
+
+
+def check_tr():
+    """Tr must contain at least one Th or Td and only some Th or Td.
+    The Th and the Td must be mutually exclusive."""
+    assert Page(el.Tr()).is_valid() is False
+    assert Page(el.Tr(el.P())).is_valid() is False
+    assert Page(el.Tr(el.P())).is_valid() is False
+    assert Page(el.Tr([el.Td(), el.Th()])).is_valid() is False
+    assert Page(el.Tr([el.Th(), el.Td()])).is_valid() is False
+    assert Page(el.Tr([el.Td(), el.Td()])).is_valid() is True
+    assert Page(el.Tr([el.Th(), el.Th()])).is_valid() is True
+    assert Page(el.Tr(el.Td())).is_valid() is True
+    assert Page(el.Tr(el.Th())).is_valid() is True
+
+
+def check_table():
+    """Table: must only contain Tr and only some Tr."""
+    assert Page(el.Table(Text())).is_valid() is False
+    assert Page(el.Table([el.Tr(), el.P()])).is_valid() is False
+    assert Page(el.Table(el.Tr())).is_valid() is True
+    assert Page(el.Table()).is_valid() is True
+
+
 def test():
-    head_and_body_in_html()
-    types_of_every_item_in_tree()
-    head_contain_only_title()
+    check_head_and_body()
+    check_types()
+    check_head()
     check_body_and_div()
     check_elem_containing_only_text()
+    check_span()
+    check_list()
+    check_tr()
+    check_table()
 
 
 if __name__ == "__main__":

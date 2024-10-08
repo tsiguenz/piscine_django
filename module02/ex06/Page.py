@@ -29,7 +29,18 @@ class Page:
         self.tree = tree
 
     def __str__(self):
-        return self.tree.__str__()
+        str = self.tree.__str__()
+        if isinstance(self.tree, el.Html):
+            str = "<!DOCTYPE html>\n" + str
+        return str
+
+    def write_to_file(self, filename):
+        try:
+            with open(filename, "w") as file:
+                file.write(self.__str__())
+        except Exception as e:
+            print(e)
+            exit(1)
 
     def is_valid(self):
         return self.__is_valid(self.tree)
@@ -79,8 +90,7 @@ class Page:
     def __is_body_and_div_ok(self, content):
         """Body and Div must only contain the following type of elements:
         H1, H2, Div, Table, Ul, Ol, Span, or Text."""
-        valid_types = (el.H1, el.H2, el.Div, el.Table,
-                       el.Ul, el.Ol, el.Span, Text)
+        valid_types = (el.H1, el.H2, el.Div, el.Table, el.Ul, el.Ol, el.Span, Text)
         if isinstance(content.content, list):
             return all([isinstance(item, valid_types) for item in content.content])
         return isinstance(content.content, valid_types)
@@ -95,7 +105,7 @@ class Page:
     def __is_span_ok(self, span):
         """Span must only contain Text or some P."""
         if isinstance(span.content, list):
-            return all([isinstance(item, el.P) for item in span.content])
+            return all([isinstance(item, (Text, el.P)) for item in span.content])
         return isinstance(span.content, (Text, el.P))
 
     def __is_list_ok(self, lst):
@@ -112,10 +122,8 @@ class Page:
         if isinstance(tr.content, list):
             if len(tr.content) == 0:
                 return False
-            contain_only_th = all([isinstance(item, el.Th)
-                                  for item in tr.content])
-            contain_only_td = all([isinstance(item, el.Td)
-                                  for item in tr.content])
+            contain_only_th = all([isinstance(item, el.Th) for item in tr.content])
+            contain_only_td = all([isinstance(item, el.Td) for item in tr.content])
             return contain_only_th or contain_only_td
 
         return isinstance(tr.content, (el.Th, el.Td))
@@ -123,11 +131,39 @@ class Page:
     def __is_table_ok(self, table):
         """Table: must only contain Tr and only some Tr."""
         if isinstance(table.content, list):
-            if len(table.content) == 0:
-                return False
             return all([isinstance(item, el.Tr) for item in table.content])
         return isinstance(table.content, el.Tr)
 
 
 if __name__ == "__main__":
-    pass
+    table = el.Table(
+        [
+            el.Tr([el.Th(Text("Firstname")), el.Th(Text("Lastname"))]),
+            el.Tr([el.Td(Text("John")), el.Td(Text("Doe"))]),
+            el.Tr([el.Td(Text("Jane")), el.Td(Text("Doe"))]),
+        ]
+    )
+    lst = el.Ul(
+        [
+            el.Li(Text("Flour")),
+            el.Li(Text("Baking powder")),
+            el.Li(Text("Suggar")),
+            el.Li(Text("Salt")),
+            el.Li(Text("Milk")),
+            el.Li(Text("Butter")),
+            el.Li(Text("Egg")),
+        ]
+    )
+
+    head = el.Head(el.Title(Text("this is the title")))
+    body = el.Body(
+        [
+            el.H1(Text("This is a table:")),
+            el.Div(attr={"style": "border:1px solid grey"}, content=table),
+            el.H2(Text("Pancake ingredients:")),
+            lst,
+        ]
+    )
+    page = Page(el.Html([head, body]))
+    page.write_to_file("test.html")
+    print(Page(el.P(Text("don't contain doctype"))))
