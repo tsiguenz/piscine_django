@@ -11,7 +11,7 @@ class CoffeeMachine:
         name = "empty cup"
         price = "0.90"
 
-        def Description(self):
+        def description(self):
             return "An empty cup?! Gimme my money back!"
 
     class BrokenMachineException(Exception):
@@ -20,6 +20,7 @@ class CoffeeMachine:
 
     def repair(self):
         self.nb_services = 0
+        print("The machine is repaired")
 
     def serve(self, beverage):
         if not is_derived_of(beverage, beverages.HotBeverage):
