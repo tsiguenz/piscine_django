@@ -25,7 +25,8 @@ class Elem:
     """
 
     class ValidationError(Exception):
-        pass
+        def __init__(self):
+            super().__init__("Validation error!")
 
     def __init__(self, tag="div", attr={}, content=None, tag_type="double"):
         """
@@ -87,9 +88,17 @@ class Elem:
         if not Elem.check_type(content):
             raise Elem.ValidationError
         if type(content) is list:
-            self.content += [elem for elem in content if elem != Text("")]
-        elif content != Text(""):
-            self.content.append(content)
+            for item in content:
+                if self.check_type(item) is False:
+                    raise Elem.ValidationError
+                self.content.append(item)
+        elif self.check_type(content):
+            if type(self.content) is list:
+                self.content.append(content)
+            elif self.content is None:
+                self.content = [content]
+            else:
+                self.content = [self.content, content]
 
     @staticmethod
     def check_type(content):
@@ -117,6 +126,11 @@ if __name__ == "__main__":
         tag="img", attr={"src": "http://i.imgur.com/pfp3T.jpg"}, tag_type="simple"
     )
     body = Elem(tag="body", content=[h1, img])
-    html = Elem(tag="html", content=[head, body])
+    html = Elem(tag="html")
+    html.add_content(head)
+    html.add_content(body)
     print(html)
-    print(Elem(content=[42]))
+    try:
+        print(Elem(content=[42]))
+    except Exception as e:
+        print("Exception:", e)
