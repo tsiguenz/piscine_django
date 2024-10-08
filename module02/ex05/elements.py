@@ -105,16 +105,17 @@ class Hr(Elem):
 
 class Br(Elem):
     def __init__(self, content=None, attr={}):
-        super().__init__(tag="br", attr=attr, tag_type="simple")
+        super().__init__(tag="br", content=content, attr=attr, tag_type="simple")
 
 
 if __name__ == "__main__":
+    print(Html([Head(), Body()]))
     html = Html(
         [
-            Head(Title(Text("Hello ground!"))),
+            Head(Title(Text('"Hello ground!"'))),
             Body(
                 [
-                    H1(Text("Oh no, not again!")),
+                    H1(Text('"Oh no, not again!"')),
                     Img(
                         attr={"src": "http://i.imgur.com/pfp3T.jpg"},
                     ),
