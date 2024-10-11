@@ -1,1 +1,2 @@
-dewiki
+dewiki==0.1.0
+Requests==2.32.3
