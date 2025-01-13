@@ -1,8 +1,7 @@
-#!/usr/bin/python3
-
-import requests
-import dewiki
 import sys
+
+import dewiki
+import requests
 
 
 def usage():
