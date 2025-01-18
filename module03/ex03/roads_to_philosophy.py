@@ -34,9 +34,9 @@ def is_valid_wikipedia_article_link(link):
 
 
 def is_parent_ok(a):
-    if a.find_parent(role=["note", "presentation"]):
+    if a.find_parent(role=["note", "presentation", "navigation"]):
         return False
-    if a.find_parent(class_=["side-box-text", "sidebar", "thumb"]):
+    if a.find_parent(class_=["side-box-text", "side-box-flex", "sidebar", "thumb"]):
         return False
     if a.find_parent(["table", "figure"]):
         return False
@@ -75,8 +75,8 @@ def main():
         next_term = get_first_link(base_url + next_term)
         if titles[-1] == "Philosophy":
             break
-    for base_term in titles:
-        print(base_term)
+    for title in titles:
+        print(title)
     print(f"{len(titles)} roads from {base_term} to Philosophy")
 
 
