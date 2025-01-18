@@ -96,6 +96,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+SECRET_KEY = "supersecretkey"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
