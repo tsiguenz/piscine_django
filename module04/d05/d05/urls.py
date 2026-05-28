@@ -22,5 +22,7 @@ from ex01 import views as v1
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('ex00/', v0.index, name='ex00'),
-    path('ex01/', v1.index, name='ex01'),
+    path('ex01/django', v1.django, name='django'),
+    path('ex01/display', v1.display, name='display'),
+    path('ex01/templates', v1.templates, name='templates'),
 ]

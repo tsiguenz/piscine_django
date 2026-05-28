@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block style %}<link rel="stylesheet" href='{% static "style2.css" %}'>{% endblock style %}
+
+{% block title %}Ex01: Template engine.{% endblock %}
+
+{% block content %}
+<h1>Django Template Engine</h1>
+<p>
+	Django’s template engine generates dynamic HTML by combining static HTML
+	with data sent from the server (the context).
+</p>
+
+<h2>Context Variables</h2>
+<p>
+	Variables passed from the view are displayed using double curly braces.
+</p>
+
+<h2>Blocks</h2>
+<p>
+	Blocks define sections of a template that child templates can override.
+</p>
+
+<h2>Loops (for ... in)</h2>
+<p>
+	Loops are used to iterate over lists of data.
+</p>
+
+<h2>If Conditions</h2>
+<p>
+	If statements display content depending on a condition.
+</p>
+{% endblock %}

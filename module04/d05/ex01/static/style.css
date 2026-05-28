@@ -1,0 +1,10 @@
+.navbar * {
+  color: white;
+  text-decoration: none;
+  display: inline;
+}
+.navbar li {
+  list-style-type: none;
+  background-color: grey;
+  padding: 10px;
+}
